@@ -1,0 +1,303 @@
+/* ==========================================================================
+   style.css — one stylesheet for all three pages.
+   Mobile first: the base styles are for phones, wider screens get a little more room.
+   No animations, no web fonts, no images: the page loads fast on any connection.
+   ========================================================================== */
+
+/* ---------- Colours ---------- */
+:root {
+  color-scheme: light dark;
+
+  --bg: #eef3f8;
+  --card: #ffffff;
+  --ink: #14202e;
+  --muted: #55647a;
+  --line: #d3dce8;
+  --chip: #e9eef5;
+
+  --button-bg: #14202e;
+  --button-ink: #ffffff;
+
+  --notice-bg: #fff3cf;
+  --notice-ink: #5a4200;
+  --error-bg: #fde6e6;
+  --error-ink: #7a1b1b;
+
+  /* One colour per group, so students can find their group at a glance. */
+  --group1: #2557d6;
+  --group2: #b8430b;
+  --group3: #0d7267;
+  --on-group: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d141d;
+    --card: #17212d;
+    --ink: #edf2f7;
+    --muted: #9dabbd;
+    --line: #2a3644;
+    --chip: #263242;
+
+    --button-bg: #edf2f7;
+    --button-ink: #0d141d;
+
+    --notice-bg: #3a2f10;
+    --notice-ink: #ffe6a3;
+    --error-bg: #3d1a1a;
+    --error-ink: #ffc9c9;
+
+    --group1: #80b0ff;
+    --group2: #ffb074;
+    --group3: #4fd6c4;
+    --on-group: #0d141d;
+  }
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 1.125rem/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* keeps content clear of the iPhone notch and home bar */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+.page.wide { max-width: 64rem; }
+
+h1, h2, h3, h4, .chip {
+  font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 { font-size: 1.9rem; line-height: 1.15; margin: 0 0 .5rem; }
+h2 { font-size: 1.4rem; line-height: 1.2; margin: 0 0 .5rem; }
+h3 { font-size: 1.2rem; line-height: 1.25; margin: 0 0 .25rem; }
+h4 { font-size: 1.1rem; line-height: 1.25; margin: 0 0 .25rem; }
+
+p { margin: 0 0 .75rem; }
+.muted, .meta { color: var(--muted); }
+.meta { margin: 0; font-size: 1rem; }
+
+:focus-visible {
+  outline: 3px solid var(--group1);
+  outline-offset: 2px;
+}
+
+/* ---------- Page pieces ---------- */
+.back {
+  display: inline-block;
+  padding: .5rem 0;
+  margin-bottom: .5rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.date {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: .3rem .9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font-weight: 700;
+}
+
+.stack > * + * { margin-top: 1rem; }
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.day-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+.day-card > :last-child { margin-bottom: 0; }
+
+.preview-tag {
+  display: inline-block;
+  margin-left: .5rem;
+  padding: .1rem .6rem;
+  border: 2px solid var(--muted);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: .9rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.notice, .error {
+  padding: .75rem 1rem;
+  border-radius: 12px;
+  background: var(--notice-bg);
+  color: var(--notice-ink);
+}
+.error { background: var(--error-bg); color: var(--error-ink); }
+.notice > :last-child, .error > :last-child { margin-bottom: 0; }
+
+/* ---------- A group and its lunch order ---------- */
+.group {
+  --group-colour: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 8px solid var(--group-colour);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+.group[data-group="group1"] { --group-colour: var(--group1); }
+.group[data-group="group2"] { --group-colour: var(--group2); }
+.group[data-group="group3"] { --group-colour: var(--group3); }
+
+/* Groups inside a card (tomorrow, history) sit flat inside it */
+.day-card .group, .panel .group { background: transparent; }
+
+.order {
+  list-style: none;
+  margin: .75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: .6rem;
+}
+
+.order li {
+  display: flex;
+  align-items: center;
+}
+
+/* the arrow between two classes; the empty alt text keeps screen readers quiet */
+.order li:not(:last-child)::after {
+  content: "→";
+  content: "→" / "";
+  padding: 0 .4rem;
+  color: var(--muted);
+  font-size: 1.4rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: .55rem .75rem;
+  border-radius: 12px;
+  background: var(--chip);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* the first class in the order is filled in with the group colour */
+.order li:first-child .chip {
+  background: var(--group-colour);
+  color: var(--on-group);
+}
+
+/* ---------- Buttons and inputs ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: .75rem 1.25rem;
+  border: 2px solid var(--button-bg);
+  border-radius: 14px;
+  background: var(--button-bg);
+  color: var(--button-ink);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn.secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+.btn-row .btn { flex: 1 1 12rem; }
+
+.field { margin-top: 1rem; }
+.field label {
+  display: block;
+  margin-bottom: .4rem;
+  font-weight: 700;
+}
+
+input[type="date"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 3.5rem;
+  padding: .5rem .9rem;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+input[type="date"]:disabled { opacity: .5; }
+
+.actions { margin-top: 1rem; }
+.actions > * + * { margin-top: .75rem; }
+
+/* ---------- Admin page ---------- */
+code, pre {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .95rem;
+}
+pre {
+  margin: .5rem 0 0;
+  padding: .75rem 1rem;
+  overflow-x: auto;
+  border-radius: 12px;
+  background: var(--chip);
+}
+.steps { padding-left: 1.4rem; }
+.steps li + li { margin-top: .75rem; }
+
+.two-columns { display: block; }
+
+@media (min-width: 52rem) {
+  .two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .two-columns > .panel { margin-top: 1rem; }
+}

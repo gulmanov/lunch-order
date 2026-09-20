@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#eef3f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d141d" media="(prefers-color-scheme: dark)">
+  <title>Lunch Order — Admin</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍱%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page wide">
+
+    <h1>Lunch Order — Admin</h1>
+    <p class="muted">A private tool for the lunch rotation. It never changes GitHub by itself: it only prepares the two JSON files for you to download.</p>
+
+    <noscript><p class="error">Please turn on JavaScript to use the admin page.</p></noscript>
+
+    <!-- Shown only if the JSON files cannot be loaded automatically -->
+    <section class="panel" id="load-panel" hidden>
+      <h2>Load the data files</h2>
+      <p id="load-message"></p>
+      <p>Choose <code>current.json</code> and <code>history.json</code> from the project's <code>data</code> folder. Select both files at once.</p>
+      <input type="file" id="file-input" accept=".json,application/json" multiple>
+      <p class="muted" style="margin-top: 1rem;">Alternative: open a terminal in the project folder, run <code>python3 -m http.server</code>, then open <code>http://localhost:8000/admin.html</code>.</p>
+    </section>
+
+    <div id="admin-app" hidden>
+
+      <section class="panel">
+        <h2>Today's date</h2>
+        <p class="date" id="real-today"></p>
+        <p class="notice" id="date-warning" hidden></p>
+      </section>
+
+      <div class="two-columns">
+        <section class="panel">
+          <h2>Current order</h2>
+          <p class="date" id="current-date"></p>
+          <div id="current-groups"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Tomorrow's order (calculated)</h2>
+          <div class="field" style="margin-top: 0;">
+            <label for="new-date">Date of the new order: <span id="new-day-name"></span></label>
+            <input type="date" id="new-date">
+          </div>
+          <div id="tomorrow-groups"></div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <button class="btn" type="button" id="complete-btn">Complete Today &amp; Create Tomorrow</button>
+        <p id="message" hidden style="margin-top: 1rem;"></p>
+      </section>
+
+      <section class="panel" id="download-panel" hidden>
+        <h2>Next steps</h2>
+        <div class="actions" style="margin-top: 0;">
+          <button class="btn" type="button" id="download-both-btn">Download both JSON files</button>
+          <div class="btn-row">
+            <button class="btn secondary" type="button" id="download-current-btn">Download current.json</button>
+            <button class="btn secondary" type="button" id="download-history-btn">Download history.json</button>
+          </div>
+        </div>
+        <ol class="steps">
+          <li>Move the two downloaded files into the project's <code>data</code> folder and replace the old ones.</li>
+          <li>Run these commands in the project folder:
+<pre>git add .
+git commit -m "Update lunch order"
+git push</pre>
+          </li>
+          <li>Wait a minute or two. GitHub Pages then shows the new order to students.</li>
+        </ol>
+        <p class="muted">Made a mistake? Reload this page. Nothing changes until you replace the files.</p>
+      </section>
+
+    </div>
+
+  </main>
+
+  <script src="common.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
